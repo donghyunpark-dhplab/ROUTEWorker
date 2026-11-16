@@ -109,6 +109,14 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
 
 - 세션 종료: 사용자가 계속 사용해 보면서 부족한 점이나 문제가 생기면 알려 주기로 함. 진행 중인 작업 없음.
 
+### 2026-11-16 (GitHub 업로드)
+
+- 사용자 요청: "정리해서 github에 올려줘".
+- `README.md` 추가, 브랜치 `master` → `main`, 첫 커밋.
+- GitHub CLI(gh)를 winget으로 설치하고 사용자가 브라우저로 로그인함 (계정 `pdh0085`).
+- 저장소: https://github.com/pdh0085/DHRouteView — **Private** (사용자 선택), 기본 브랜치 `main`.
+- 라이선스는 사용자가 정하지 않아 넣지 않음.
+
 ## UI를 눈으로 확인하는 방법 (마우스/키보드 제어 없이)
 
 `tools/capture.ps1`이 exe를 띄우고 `PrintWindow`로 창만 캡처한다. 실제 커서를 움직이지 않고
