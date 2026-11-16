@@ -116,6 +116,10 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
 - GitHub CLI(gh)를 winget으로 설치하고 사용자가 브라우저로 로그인함 (계정 `pdh0085`).
 - 저장소: https://github.com/pdh0085/DHRouteView — **Private** (사용자 선택), 기본 브랜치 `main`.
 - 이어서 사용자 요청으로 MIT 라이선스 추가 (`LICENSE`, 저작권자 Donghyun Park, `Cargo.toml`의 `license`, README).
+- 사용자 요청으로 GitHub 릴리스 `v0.1.0` 생성 (태그 v0.1.0 → main). 첨부: `DHRouteView.exe`(릴리스 빌드),
+  `DHRouteView-v0.1.0-windows-x64.zip`(exe + LICENSE + README). 코드 서명 없음.
+  다음 릴리스 때는 `Cargo.toml`의 `version`을 먼저 올릴 것. PowerShell 5.1에서 `gh --notes`에 따옴표가 든
+  한국어 문자열을 넘기면 인자가 깨지므로 `--notes-file`(UTF-8, BOM 없음)을 쓴다.
 
 ## UI를 눈으로 확인하는 방법 (마우스/키보드 제어 없이)
 
