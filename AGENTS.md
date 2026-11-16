@@ -115,7 +115,7 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
 - `README.md` 추가, 브랜치 `master` → `main`, 첫 커밋.
 - GitHub CLI(gh)를 winget으로 설치하고 사용자가 브라우저로 로그인함 (계정 `pdh0085`).
 - 저장소: https://github.com/pdh0085/DHRouteView — **Private** (사용자 선택), 기본 브랜치 `main`.
-- 라이선스는 사용자가 정하지 않아 넣지 않음.
+- 이어서 사용자 요청으로 MIT 라이선스 추가 (`LICENSE`, 저작권자 Donghyun Park, `Cargo.toml`의 `license`, README).
 
 ## UI를 눈으로 확인하는 방법 (마우스/키보드 제어 없이)
 

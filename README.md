@@ -46,3 +46,7 @@ cargo test               # 관리자 권한 불필요
 | `tools/capture.ps1` | 앱 창 캡처 (UI 확인용 개발 도구) |
 
 설계 결정과 개발 메모는 [AGENTS.md](AGENTS.md)에 있습니다.
+
+## 라이선스
+
+[MIT](LICENSE)
