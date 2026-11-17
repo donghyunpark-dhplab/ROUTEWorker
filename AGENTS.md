@@ -114,12 +114,21 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
 - 사용자 요청: "정리해서 github에 올려줘".
 - `README.md` 추가, 브랜치 `master` → `main`, 첫 커밋.
 - GitHub CLI(gh)를 winget으로 설치하고 사용자가 브라우저로 로그인함 (계정 `pdh0085`).
-- 저장소: https://github.com/pdh0085/DHRouteView — **Private** (사용자 선택), 기본 브랜치 `main`.
+- 저장소: https://github.com/pdh0085/DHRouteView — 처음에는 **Private**(사용자 선택)로 만들었음, 기본 브랜치 `main`.
+  2026-11-17 확인 시 **Public**으로 바뀌어 있음 (언제 바꿨는지는 기록 없음).
 - 이어서 사용자 요청으로 MIT 라이선스 추가 (`LICENSE`, 저작권자 Donghyun Park, `Cargo.toml`의 `license`, README).
 - 사용자 요청으로 GitHub 릴리스 `v0.1.0` 생성 (태그 v0.1.0 → main). 첨부: `DHRouteView.exe`(릴리스 빌드),
   `DHRouteView-v0.1.0-windows-x64.zip`(exe + LICENSE + README). 코드 서명 없음.
   다음 릴리스 때는 `Cargo.toml`의 `version`을 먼저 올릴 것. PowerShell 5.1에서 `gh --notes`에 따옴표가 든
   한국어 문자열을 넘기면 인자가 깨지므로 `--notes-file`(UTF-8, BOM 없음)을 쓴다.
+
+### 2026-11-17 (블로그 원고, 클라우드 세션)
+
+- 사용자 요청: 이 프로젝트를 소개하는 짧은 블로그 원고 정리. 원고는 저장소에 넣지 않음 (세션 임시 폴더에만 있음).
+- 사용자가 알려 준 제작 배경 (저장소에 없던 정보): 원격 지원 업무가 많은데, 현장 작업자가 사내에서 개발한
+  라우터 제품을 PC에 꽂아 두면 라우팅 테이블이 바뀌어 원격 지원이 불가능해짐. 작업자는 Windows 명령을 모름.
+  예전에는 Skype, 지금은 Teams로 통화하며 명령어를 불러 줬음. 제품 종류는 여러 개라 원고에 나열하지 않기로 함.
+- 저장소가 Public이 된 것을 확인해 위 기록을 고침. 원고에 저장소·릴리스 v0.1.0 링크를 넣음.
 
 ## UI를 눈으로 확인하는 방법 (마우스/키보드 제어 없이)
 
