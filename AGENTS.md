@@ -166,6 +166,7 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
 - 로컬 폴더 이름은 아직 `DHRouteView` 그대로.
 - 이 PC에서 저장소 폴더 소유자가 현재 Windows 계정과 달라 git이 "dubious ownership"으로 거부했다.
   이번에는 명령마다 `-c safe.directory=…`로 우회함 (전역 설정은 바꾸지 않음). `gh`도 PATH에 없었다.
+- 사용자 결정: **옛 저장소 `pdh0085/DHRouteView`는 그대로 둔다** (보관 처리·안내 문구·삭제 모두 하지 않음).
 
 ## UI를 눈으로 확인하는 방법 (마우스/키보드 제어 없이)
 
