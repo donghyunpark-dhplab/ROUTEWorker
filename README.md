@@ -1,4 +1,4 @@
-# DHRouteView
+# RouteWorker
 
 Windows 라우팅 테이블을 GUI로 조회하고 추가·편집·삭제하는 프로그램입니다. Rust + [egui](https://github.com/emilk/egui)로 만들었습니다.
 
@@ -29,7 +29,7 @@ Windows 라우팅 테이블을 GUI로 조회하고 추가·편집·삭제하는 
 Rust stable (MSVC 툴체인, edition 2024)이 필요합니다.
 
 ```powershell
-cargo build --release    # target\release\dhrouteview.exe
+cargo build --release    # target\release\routeworker.exe
 cargo test               # 관리자 권한 불필요
 ```
 

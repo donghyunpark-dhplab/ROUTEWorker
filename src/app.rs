@@ -11,7 +11,7 @@ use crate::persist::{self, PersistentRoute};
 use crate::route::{self, Interface, Route, RouteKey, RouteSpec};
 use crate::selection::Selection;
 
-pub const APP_TITLE: &str = "DHRouteView";
+pub const APP_TITLE: &str = "RouteWorker";
 
 const AUTO_REFRESH_INTERVAL: Duration = Duration::from_secs(3);
 const ROW_HEIGHT: f32 = 24.0;

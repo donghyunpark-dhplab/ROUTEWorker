@@ -1,4 +1,4 @@
-# DHRouteView — 에이전트/세션 메모
+# RouteWorker (구 DHRouteView) — 에이전트/세션 메모
 
 Windows 라우팅 테이블을 GUI로 조회·설정하는 Rust 프로그램. 이 파일은 세션 간 인수인계용 메모다.
 작업을 마칠 때마다 아래 "세션 기록"과 "다음 할 일"을 갱신할 것.
@@ -14,7 +14,7 @@ Windows 라우팅 테이블을 GUI로 조회·설정하는 Rust 프로그램. �
 
 ```powershell
 cargo build              # 디버그 (콘솔 창 있음)
-cargo build --release    # 릴리스 (콘솔 창 없음) → target\release\dhrouteview.exe
+cargo build --release    # 릴리스 (콘솔 창 없음) → target\release\routeworker.exe
 cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 (관리자 권한 불필요)
 ```
 
@@ -145,6 +145,27 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
 - 원복 확인: `git diff`/`git status` 비어 있음, `src/app.rs` blob 해시가 HEAD와 같음, 디버그 exe도 원본 소스로 다시 빌드함.
 - 이 세션은 관리자 권한이 아니었으므로 `elevated`를 강제해도 실제 API 호출은 거부되는 상태였다.
 - **저장소가 Public이므로** 이 파일에는 로컬 사용자 경로, 이 PC의 IP·인터페이스 이름 같은 환경 정보를 적지 않는다.
+- 이어서 (같은 세션):
+  - 이 기록을 푸시하려다 거부됨 — 클라우드 세션이 `origin/main`에 먼저 커밋 2개를 올려 둔 상태였음.
+    fast-forward 후 다시 얹어 푸시. **푸시 전에는 `git fetch`로 원격 상태를 확인할 것.**
+  - 사용자 요청으로 이 저장소의 `claude/lucid-edison-1yuoam` 브랜치 삭제 (내용은 이미 `main`에 있었음).
+  - 사용자 요청으로 스크린샷 3장을 블로그 저장소(`pdh0085.github.io`)의 같은 이름 브랜치
+    `static/images/dhrouteview/`에 커밋·푸시. 이 저장소에는 넣지 않음.
+  - **사용자 요청으로 커밋 메시지의 `Co-Authored-By` 줄을 전부 지움**: `git filter-branch --msg-filter`로 `main` 이력을
+    다시 쓰고(작성자·날짜·파일 내용은 그대로) `main`과 태그 `v0.1.0`을 강제 푸시함. 이때 모든 커밋 해시가 바뀌었다.
+    v0.1.0 릴리스와 첨부 파일은 그대로. 다른 곳의 옛 사본은 새 `main`을 다시 받아야 한다.
+- **커밋 규칙**: 커밋 메시지에 `Co-Authored-By` 줄을 넣지 않는다 (사용자 지시). 작성자는 git 설정 그대로.
+
+### 2026-11-22 (이름 변경, 저장소 이동)
+
+- 사용자 요청: 프로젝트 이름을 **RouteWorker**로 바꾸고 원격 저장소를
+  https://github.com/donghyunpark-dhplab/ROUTEWorker 로 옮김 (사용자가 미리 만들어 둔 빈 저장소).
+- 바꾼 것: 크레이트 이름 `routeworker`(exe는 `routeworker.exe`), 창 제목 `APP_TITLE`, README 제목·빌드 경로,
+  이 파일의 제목·현재 사용법. 위 세션 기록의 옛 이름·옛 저장소 주소는 기록이므로 그대로 둠.
+- `origin`을 새 주소로 바꾸고 `main`과 태그 `v0.1.0`을 푸시함. GitHub 릴리스(첨부 exe/zip)는 git push로 옮겨지지 않는다.
+- 로컬 폴더 이름은 아직 `DHRouteView` 그대로.
+- 이 PC에서 저장소 폴더 소유자가 현재 Windows 계정과 달라 git이 "dubious ownership"으로 거부했다.
+  이번에는 명령마다 `-c safe.directory=…`로 우회함 (전역 설정은 바꾸지 않음). `gh`도 PATH에 없었다.
 
 ## UI를 눈으로 확인하는 방법 (마우스/키보드 제어 없이)
 
@@ -153,7 +174,7 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File tools\capture.ps1 `
-  -Exe target\debug\dhrouteview.exe -Out C:\임시경로\shot.png -Clicks "L:100,250;R:100,340"
+  -Exe target\debug\routeworker.exe -Out C:\임시경로\shot.png -Clicks "L:100,250;R:100,340"
 ```
 
 - `L:` 좌클릭, `R:` 우클릭, `D:` 더블클릭. `T:`(문자 입력)는 동작하지 않는다.
