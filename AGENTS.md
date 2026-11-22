@@ -25,8 +25,10 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
 
 | 파일 | 역할 |
 | --- | --- |
-| `src/main.rs` | 진입점, 창 옵션 |
-| `src/app.rs` | egui UI 전체 (도구 모음, 테이블, 추가/편집·삭제 확인 대화 상자, 상태 표시줄) |
+| `src/main.rs` | 진입점, 창 옵션 (창 아이콘) |
+| `src/app.rs` | egui UI 전체 (도구 모음, 테이블, 추가/편집·삭제 확인·정보 대화 상자, 상태 표시줄) |
+| `build.rs` | exe 아이콘 + 버전 정보 리소스 (`winresource`) |
+| `assets/` | 앱 아이콘(.ico/.png/.svg), 회사 로고 PNG — 원본은 DHPLab 브랜드 폴더에서 받음 |
 | `src/route.rs` | IP Helper API 래퍼 + 주소 파싱/검증 순수 함수 + 테스트 |
 | `src/persist.rs` | 영구 라우트 (레지스트리) |
 | `src/selection.rs` | 다중 선택 상태 (클릭 / Ctrl+클릭 / Shift+클릭 규칙) + 테스트 |
@@ -174,6 +176,26 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
   첨부: `RouteWorker.exe`, `RouteWorker-v0.2.0-windows-x64.zip`(exe + LICENSE + README). 코드 서명 없음.
   설치 파일(MSI 등)은 만들지 않기로 함 — 단일 exe라 설치할 것이 없고, 현장 작업자는 받아서 바로 실행하는 편이 쉽다.
   v0.1.0은 새 저장소에 태그만 있고 릴리스 페이지는 옛 저장소에만 있다.
+- 같은 날 사용자 요청으로 dhplab.com 제품 페이지용 스크린샷을 만들어 다른 Claude 세션("DHPLab", 회사 웹사이트 담당)에
+  넘김 (그쪽 저장소 폴더에 저장). 공개용이므로 IPv4 화면만 사용 — IPv6 기본 경로의 next hop이 라우터 MAC 기반
+  링크 로컬 주소라서. 1400px 폭을 위해 창 크기·`elevated`·폼 열기를 임시 코드로 바꿨다가 원복함.
+  **주의: 원복할 때 `git checkout -- 파일`을 쓰지 말 것** — 커밋 안 한 진짜 변경까지 지워진다. 임시 줄만 지운다.
+
+### 2026-11-22 (v0.2.1: 아이콘, 정보 화면)
+
+- 사용자 요청: 로고·아이콘 변경과 About 추가. 디자인은 DHPLab 세션이 준비 — 후보 3개 중 사용자가 **A(fork)** 선택.
+- 사용자 결정: 저작권 표기 **"Copyright (c) 2026 DHPLab Consulting"** (LICENSE도 변경), 앱 안 문의처는
+  **웹사이트만** (이메일 넣지 않음). 퍼블리셔 표기 "DHPLab Consulting".
+- 추가한 것:
+  - `assets/routeworker.ico`: DHPLab이 준 PNG 16~256px를 PNG 압축 항목으로 묶어 직접 만듦.
+    System.Drawing.Icon은 256px PNG 항목을 못 읽으니 WIC(`IconBitmapDecoder`)로 7개 크기를 확인할 것.
+  - `build.rs`(`winresource`): exe 아이콘, ProductName/CompanyName/LegalCopyright 등 버전 정보.
+  - 창 아이콘: `eframe::icon_data::from_png_bytes`(추가 의존성 없음).
+  - 도구 모음 오른쪽 끝 "정보" 버튼 → 정보 대화 상자: 아이콘, 이름, 버전(`CARGO_PKG_VERSION`), 한 줄 설명,
+    DHPLab 가로 로고(밝은 배경용, 2000px 원본을 640px로 축소만 함, 180px로 표시 — 브랜드 규칙: 최소 140px,
+    여백은 마크 높이의 1/4 이상, 색·비율 변경 금지 — `dhplab-web\docs\BRAND.md`), 저작권, MIT, dhplab.com·GitHub 링크.
+  - 제품 페이지 https://dhplab.com/routeworker/ 링크는 DHPLab 세션이 공개됐다고 알려 준 뒤에 넣기로 함 (아직 안 넣음).
+- `Cargo.toml` version 0.2.1, 릴리스 v0.2.1 (첨부 이름 규칙은 v0.2.0과 같음).
 
 ## UI를 눈으로 확인하는 방법 (마우스/키보드 제어 없이)
 
@@ -206,5 +228,5 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\capture.ps1 `
   (테스트용 대상은 문서용 대역 `198.51.100.0/24` 권장).
 - ~~사용자의 첫 요청 문장이 끝나지 않았으므로 추가 요구 사항 확인~~ — 사용자가 "내 요구는 거의 완벽하게
   구현한 것 같다"고 함 (2026-11-15). "거의"에 해당하는 부족한 점이 무엇인지는 말하지 않았음.
-- 후보 개선(요청받은 것은 아님): `tools/capture.ps1` 클릭을 "연달아 보내기" 방식으로 바꾸기, exe 아이콘/버전 리소스, 라우트 목록 내보내기·가져오기,
+- 후보 개선(요청받은 것은 아님): `tools/capture.ps1` 클릭을 "연달아 보내기" 방식으로 바꾸기, ~~exe 아이콘/버전 리소스~~(v0.2.1에서 함), 정보 화면에 제품 페이지 링크(공개 후), 라우트 목록 내보내기·가져오기,
   IPv6 영구 라우트(netsh 저장소), 릴리스 exe 크기 축소(`glow` 렌더러, `opt-level="s"`, LTO).

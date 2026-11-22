@@ -13,6 +13,10 @@ fn main() -> eframe::Result {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_title(app::APP_TITLE)
+            .with_icon(
+                eframe::icon_data::from_png_bytes(app::APP_ICON_PNG)
+                    .expect("내장 아이콘 PNG가 올바르지 않음"),
+            )
             .with_inner_size([1080.0, 640.0])
             .with_min_inner_size([760.0, 420.0]),
         centered: true,

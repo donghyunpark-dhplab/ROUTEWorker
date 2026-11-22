@@ -49,4 +49,4 @@ cargo test               # 관리자 권한 불필요
 
 ## 라이선스
 
-[MIT](LICENSE)
+[MIT](LICENSE) · Copyright (c) 2026 DHPLab Consulting · https://dhplab.com

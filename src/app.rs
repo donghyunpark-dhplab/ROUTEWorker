@@ -12,6 +12,14 @@ use crate::route::{self, Interface, Route, RouteKey, RouteSpec};
 use crate::selection::Selection;
 
 pub const APP_TITLE: &str = "RouteWorker";
+/// 창 아이콘과 "정보" 대화 상자에 쓰는 앱 아이콘 (256px).
+pub const APP_ICON_PNG: &[u8] = include_bytes!("../assets/routeworker-icon-256.png");
+/// "정보" 대화 상자의 회사 로고 (밝은 배경용 가로형). 색·비율을 바꾸지 말 것 (브랜드 규칙).
+const COMPANY_LOGO_PNG: &[u8] = include_bytes!("../assets/dhplab-logo-horizontal-640.png");
+const PUBLISHER: &str = "DHPLab Consulting";
+const COPYRIGHT: &str = "Copyright (c) 2026 DHPLab Consulting";
+const WEBSITE_URL: &str = "https://dhplab.com";
+const REPO_URL: &str = "https://github.com/donghyunpark-dhplab/ROUTEWorker";
 
 const AUTO_REFRESH_INTERVAL: Duration = Duration::from_secs(3);
 const ROW_HEIGHT: f32 = 24.0;
@@ -158,8 +166,21 @@ pub struct App {
 
     form: Option<RouteForm>,
     confirm: Option<Confirm>,
+    about_open: bool,
+    /// "정보" 대화 상자를 처음 열 때 만든다: (앱 아이콘, 회사 로고).
+    about_textures: Option<(egui::TextureHandle, egui::TextureHandle)>,
     /// (성공 여부, 메시지)
     status: Option<(bool, String)>,
+}
+
+/// 내장 PNG를 egui 텍스처로 올린다.
+fn load_png_texture(ctx: &egui::Context, name: &str, png: &[u8]) -> egui::TextureHandle {
+    let icon = eframe::icon_data::from_png_bytes(png).expect("내장 PNG가 올바르지 않음");
+    let image = egui::ColorImage::from_rgba_unmultiplied(
+        [icon.width as usize, icon.height as usize],
+        &icon.rgba,
+    );
+    ctx.load_texture(name, image, egui::TextureOptions::LINEAR)
 }
 
 impl App {
@@ -180,6 +201,8 @@ impl App {
             selected: Selection::default(),
             form: None,
             confirm: None,
+            about_open: false,
+            about_textures: None,
             status: None,
         };
         app.refresh();
@@ -460,6 +483,10 @@ impl App {
             );
 
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                if ui.button("정보").on_hover_text("RouteWorker 정보").clicked() {
+                    self.about_open = true;
+                }
+                ui.separator();
                 ui.checkbox(&mut self.auto_refresh, "자동 새로 고침");
             });
         });
@@ -1089,12 +1116,70 @@ impl App {
             self.confirm = Some(confirm);
         }
     }
+
+    fn about_dialog(&mut self, ctx: &egui::Context) {
+        if !self.about_open {
+            return;
+        }
+        let (icon, logo) = self
+            .about_textures
+            .get_or_insert_with(|| {
+                (
+                    load_png_texture(ctx, "app_icon", APP_ICON_PNG),
+                    load_png_texture(ctx, "company_logo", COMPANY_LOGO_PNG),
+                )
+            })
+            .clone();
+        let mut close = false;
+
+        let modal = egui::Modal::new(egui::Id::unique("about")).show(ctx, |ui| {
+            ui.set_width(400.0);
+            ui.vertical_centered(|ui| {
+                ui.add_space(6.0);
+                ui.add(egui::Image::new((icon.id(), egui::vec2(72.0, 72.0))));
+                ui.add_space(6.0);
+                ui.heading(APP_TITLE);
+                ui.label(format!("버전 {}", env!("CARGO_PKG_VERSION")));
+                ui.add_space(6.0);
+                ui.label("Windows 라우팅 테이블을 조회하고 추가·편집·삭제하는 도구");
+                ui.add_space(14.0);
+                ui.separator();
+                // 로고 여백: 마크 높이의 1/4 이상 (브랜드 규칙). 최소 폭 140px.
+                ui.add_space(14.0);
+                let w = 180.0;
+                let [lw, lh] = logo.size();
+                ui.add(egui::Image::new((logo.id(), egui::vec2(w, w * lh as f32 / lw as f32))));
+                ui.add_space(14.0);
+                ui.label(PUBLISHER);
+                ui.weak(COPYRIGHT);
+                ui.weak("MIT 라이선스");
+                ui.add_space(6.0);
+                ui.horizontal(|ui| {
+                    // 가운데 정렬을 위해 두 링크 폭만큼 왼쪽 여백을 둔다.
+                    let links_w = 190.0;
+                    ui.add_space(((ui.available_width() - links_w) / 2.0).max(0.0));
+                    ui.hyperlink_to("dhplab.com", WEBSITE_URL);
+                    ui.label("·");
+                    ui.hyperlink_to("GitHub 저장소", REPO_URL);
+                });
+            });
+            ui.add_space(10.0);
+            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                if ui.button("닫기").clicked() {
+                    close = true;
+                }
+            });
+        });
+        if close || modal.should_close() {
+            self.about_open = false;
+        }
+    }
 }
 
 impl eframe::App for App {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
-        let dialog_open = self.form.is_some() || self.confirm.is_some();
+        let dialog_open = self.form.is_some() || self.confirm.is_some() || self.about_open;
 
         if !dialog_open && ui.input(|i| i.key_pressed(egui::Key::F5)) {
             self.refresh();
@@ -1143,5 +1228,6 @@ impl eframe::App for App {
 
         self.form_dialog(&ctx);
         self.confirm_dialog(&ctx);
+        self.about_dialog(&ctx);
     }
 }
