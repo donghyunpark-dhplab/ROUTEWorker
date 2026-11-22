@@ -167,6 +167,13 @@ cargo test               # 단위 테스트 + 읽기 전용 스모크 테스트 
 - 이 PC에서 저장소 폴더 소유자가 현재 Windows 계정과 달라 git이 "dubious ownership"으로 거부했다.
   이번에는 명령마다 `-c safe.directory=…`로 우회함 (전역 설정은 바꾸지 않음). `gh`도 PATH에 없었다.
 - 사용자 결정: **옛 저장소 `pdh0085/DHRouteView`는 그대로 둔다** (보관 처리·안내 문구·삭제 모두 하지 않음).
+- `gh`를 winget으로 다시 설치하고 사용자가 `donghyunpark-dhplab` 계정으로 로그인함.
+  설치 직후 세션에서는 PATH가 반영되지 않아 `C:\Program Files\GitHub CLI\gh.exe` 전체 경로로 실행했다.
+  기기 코드 로그인은 사용자가 바로 승인하지 않으면 만료되므로, 사용자가 직접 `gh auth login --web`을 실행하는 편이 낫다.
+- 사용자 요청으로 새 저장소에 릴리스 **`v0.2.0`** 생성 (`Cargo.toml` version 0.2.0, 이름 변경 외 기능 변경 없음).
+  첨부: `RouteWorker.exe`, `RouteWorker-v0.2.0-windows-x64.zip`(exe + LICENSE + README). 코드 서명 없음.
+  설치 파일(MSI 등)은 만들지 않기로 함 — 단일 exe라 설치할 것이 없고, 현장 작업자는 받아서 바로 실행하는 편이 쉽다.
+  v0.1.0은 새 저장소에 태그만 있고 릴리스 페이지는 옛 저장소에만 있다.
 
 ## UI를 눈으로 확인하는 방법 (마우스/키보드 제어 없이)
 
