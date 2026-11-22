@@ -2,6 +2,9 @@
 
 Windows 라우팅 테이블을 GUI로 조회하고 추가·편집·삭제하는 프로그램입니다. Rust + [egui](https://github.com/emilk/egui)로 만들었습니다.
 
+제품 페이지: [dhplab.com/ko/routeworker](https://dhplab.com/ko/routeworker/) ([English](https://dhplab.com/routeworker/)) ·
+다운로드: [최신 릴리스](https://github.com/donghyunpark-dhplab/ROUTEWorker/releases/latest)
+
 `route.exe`를 호출하지 않고 IP Helper API(`GetIpForwardTable2`, `CreateIpForwardEntry2`,
 `SetIpForwardEntry2`, `DeleteIpForwardEntry2`)를 직접 사용하므로 로캘과 무관하게 동작합니다.
 

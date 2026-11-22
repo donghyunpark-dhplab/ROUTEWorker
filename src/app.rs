@@ -19,6 +19,8 @@ const COMPANY_LOGO_PNG: &[u8] = include_bytes!("../assets/dhplab-logo-horizontal
 const PUBLISHER: &str = "DHPLab Consulting";
 const COPYRIGHT: &str = "Copyright (c) 2026 DHPLab Consulting";
 const WEBSITE_URL: &str = "https://dhplab.com";
+/// UI가 한국어이므로 한국어 제품 페이지로 연결한다 (영어: https://dhplab.com/routeworker/).
+const PRODUCT_URL: &str = "https://dhplab.com/ko/routeworker/";
 const REPO_URL: &str = "https://github.com/donghyunpark-dhplab/ROUTEWorker";
 
 const AUTO_REFRESH_INTERVAL: Duration = Duration::from_secs(3);
@@ -1154,14 +1156,9 @@ impl App {
                 ui.weak(COPYRIGHT);
                 ui.weak("MIT 라이선스");
                 ui.add_space(6.0);
-                ui.horizontal(|ui| {
-                    // 가운데 정렬을 위해 두 링크 폭만큼 왼쪽 여백을 둔다.
-                    let links_w = 190.0;
-                    ui.add_space(((ui.available_width() - links_w) / 2.0).max(0.0));
-                    ui.hyperlink_to("dhplab.com", WEBSITE_URL);
-                    ui.label("·");
-                    ui.hyperlink_to("GitHub 저장소", REPO_URL);
-                });
+                ui.hyperlink_to("RouteWorker 제품 페이지", PRODUCT_URL);
+                ui.hyperlink_to("dhplab.com", WEBSITE_URL);
+                ui.hyperlink_to("GitHub 저장소", REPO_URL);
             });
             ui.add_space(10.0);
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
